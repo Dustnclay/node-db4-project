@@ -9,21 +9,24 @@ exports.up = function(knex) {
         tbl.increments();
         tbl.string('name', 128).notNullable()
         tbl.float('quantity').notNullable()
+        tbl.integer('recipe_id')
+            .unsigned()
+            .notNullable()
+            .references('recipe.id')
     })
-    .createTable('instruction', tbl => {
-        tbl.integer('step_number').notNullable()
-        tbl.string('step').notNullable()
-        tbl.integer('recipe_id').notNullable()
-    })
-    .createTable('recipe-instruction', tbl => {
-        tbl.integer('recipe_id').notNullable()
-        tbl.string('ingredient_id').notNullable()
+    .createTable('instructions', tbl => {
+        tbl.integer('instruction_number').notNullable()
+        tbl.string('instruction').notNullable()
+        tbl.integer('recipe_id')
+            .unsigned()
+            .notNullable()
+            .references('recipe.id')
+
     })
 };
 
 exports.down = function(knex) {
   return knex.scheme
-  .dropTableIfExists('recipe-ingredient')
   .dropTableIfExists('instruction')
   .dropTableIfExists('ingredient')
     .dropTableIfExists('recipe')
